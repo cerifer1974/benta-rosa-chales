@@ -4,3 +4,4 @@
 - [x] Preservar contatos e chat 24h
 - [x] Validar a experiência em desktop e celular
 - [x] Curar as novas fotos e substituir imagens de baixa resolução
+- [x] Aplicar avaliações reais e destacar a reputação no Google
