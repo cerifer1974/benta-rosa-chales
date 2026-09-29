@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDown, Instagram, Menu, MessageCircle, X } from "lucide-react";
-import { useState } from "react";
+import { ArrowDown, ArrowUpRight, Facebook, Instagram, Mail, MapPin, Menu, MessageCircle, Phone, Star, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { BookingPanel } from "@/components/BookingPanel";
+import { ADDRESS, BOOKING_URL, EMAIL, FACEBOOK_URL, INSTAGRAM_URL, MAPS_QUERY, PHONE_DISPLAY, WHATSAPP_URL } from "@/lib/site";
 import logo from "@/assets/bentaro/logo.png";
 import hero from "@/assets/bentaro/hero.jpg";
 import aFrame from "@/assets/bentaro/a-frame.png";
@@ -10,156 +11,265 @@ import belaVista from "@/assets/bentaro/bela-vista.jpg";
 import imperial from "@/assets/bentaro/imperial.jpg";
 import gallery02 from "@/assets/bentaro/gallery-02.jpg";
 import gallery03 from "@/assets/bentaro/gallery-03.jpg";
-import gallery04 from "@/assets/bentaro/gallery-04.jpg";
-import gallery05 from "@/assets/bentaro/gallery-05.jpg";
 import gallery06 from "@/assets/bentaro/gallery-06.jpg";
 import gallery07 from "@/assets/bentaro/gallery-07.jpg";
 import gallery08 from "@/assets/bentaro/gallery-08.jpg";
 
-const BOOKING_URL = "https://hbook.hsystem.com.br/Booking?companyId=625b48acbf08c43c9390205e";
-const WHATSAPP_URL = "https://api.whatsapp.com/send?phone=5549999844794";
+const TITLE = "Chalés de Luxo em Urubici, SC | Benta Rosa – Morro da Igreja";
+const DESCRIPTION = "Chalés de luxo no Morro da Igreja, a 1.450 m de altitude em Urubici. Neve, araucárias e vista para a serra. Reserve direto.";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  name: "Benta Rosa Chalés de Luxo",
+  telephone: "+55-49-99984-4794",
+  email: EMAIL,
+  image: "https://www.bentarosaurubici.com.br/",
+  url: "https://www.bentarosaurubici.com.br/",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Estrada Geral de Santa Terezinha, Parque das Araucárias, Lote 41 – Morro da Igreja",
+    addressLocality: "Urubici",
+    addressRegion: "SC",
+    addressCountry: "BR",
+  },
+  sameAs: [INSTAGRAM_URL, FACEBOOK_URL],
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Benta Rosa — Chalés de Luxo em Urubici" },
-      { name: "description", content: "Chalés autorais a 1.450 metros de altitude, no Morro da Igreja, em Urubici. Natureza, privacidade e vistas cinematográficas da Serra Catarinense." },
-      { property: "og:title", content: "Benta Rosa — Chalés de Luxo em Urubici" },
-      { property: "og:description", content: "Uma experiência exclusiva entre araucárias, no alto da Serra Catarinense." },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    scripts: [{ type: "application/ld+json", children: JSON.stringify(jsonLd) }],
   }),
   component: Home,
 });
 
 const stays = [
-  { name: "A-Frame", image: aFrame, caption: "Hidromassagem, lareira e uma passarela de vidro à beira do penhasco." },
-  { name: "Iglu", image: iglu, caption: "Domo de vidro, integração com a mata e o céu inteiro sobre a cama." },
-  { name: "Bela Vista", image: belaVista, caption: "Um refúgio aconchegante e pet friendly com vista para as montanhas." },
-  { name: "Imperial", image: imperial, caption: "Luxo clássico, privacidade e uma paisagem que parece cenário de filme." },
+  { name: "Chalé A-Frame", image: aFrame, line: "Arquitetura em A suspensa sobre o vale.", tags: ["Hidromassagem", "Lareira", "Passarela de vidro"], alt: "Chalé A-Frame com passarela de vidro à beira do penhasco, Urubici", feature: true },
+  { name: "Chalé Iglu", image: iglu, line: "Dormir sob um domo aberto para o céu.", tags: ["Domo de vidro", "Vista panorâmica", "Integração com a mata"], alt: "Chalé Iglu com domo de vidro entre araucárias, Urubici", feature: true },
+  { name: "Chalé Imperial", image: imperial, line: "Luxo clássico, reservado para dois.", tags: ["Luxo clássico", "Privacidade", "Ideal para casais"], alt: "Interior do Chalé Imperial com vista para a serra", feature: false },
+  { name: "Casa Bela Vista", image: belaVista, line: "Nossa opção mais acessível, com o mesmo cenário.", tags: ["Aconchego", "Vista para as montanhas", "Pet friendly"], alt: "Casa Bela Vista com vista para as montanhas de Urubici", feature: false },
 ];
+
+const reviews = [
+  { text: "[PREENCHER — depoimento real]", name: "[PREENCHER nome]", from: "[PREENCHER cidade]" },
+  { text: "[PREENCHER — depoimento real]", name: "[PREENCHER nome]", from: "[PREENCHER cidade]" },
+  { text: "[PREENCHER — depoimento real]", name: "[PREENCHER nome]", from: "[PREENCHER cidade]" },
+];
+
+const attractions = [
+  { name: "Morro da Igreja", line: "Um dos pontos mais altos e frios do Sul, com vista para a Pedra Furada." },
+  { name: "Pedra Furada", line: "Formação rochosa com um arco natural esculpido pelo vento." },
+  { name: "Serra do Corvo Branco", line: "Estrada cênica cortada entre paredões de rocha." },
+  { name: "Cascata Véu de Noiva", line: "Queda d'água cercada de mata, uma das mais visitadas da cidade." },
+  { name: "Inscrições rupestres", line: "Sítios arqueológicos com gravuras pré-históricas." },
+  { name: "Culinária serrana", line: "Pinhão, truta, queijo serrano e a tradição campeira." },
+];
+
+const navItems = [
+  ["#acomodacoes", "Acomodações"],
+  ["#experiencia", "Experiência"],
+  ["#urubici", "Urubici"],
+  ["#avaliacoes", "Avaliações"],
+  ["#contato", "Contato"],
+] as const;
 
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [chatOpen, setChatOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <main className="min-h-screen bg-araucaria text-paper">
-      <header className="site-header">
-        <a href="#top" aria-label="Benta Rosa, início" className="flex items-center gap-3">
-          <img src={logo} alt="" className="size-10 object-contain brightness-0 invert" />
-          <span className="font-serif text-sm uppercase tracking-[0.22em]">Benta Rosa</span>
+      <header className={`site-header ${scrolled || menuOpen ? "is-solid" : ""}`}>
+        <a href="#top" aria-label="Benta Rosa, início" className="flex min-w-0 items-center gap-3">
+          <img src={logo} alt="" className="size-10 shrink-0 object-contain brightness-0 invert" />
+          <span className="truncate font-serif text-sm uppercase tracking-[0.12em]">Benta Rosa</span>
         </a>
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Navegação principal">
-          <a href="#acomodacoes" className="nav-link">Acomodações</a>
-          <a href="#experiencia" className="nav-link">Experiência</a>
-          <a href="#urubici" className="nav-link">Urubici</a>
-          <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="nav-link">Reservas</a>
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Navegação principal">
+          {navItems.map(([href, label]) => <a key={href} href={href} className="nav-link">{label}</a>)}
+          <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="button-primary">Reservar</a>
         </nav>
-        <div className="hidden items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-sand md:flex">
-          <span className="size-1.5 rounded-full bg-sand animate-pulse" /> 1.450 m · Morro da Igreja
-        </div>
-        <button type="button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Abrir menu" className="icon-button lg:hidden">
+        <button type="button" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} aria-expanded={menuOpen} className="icon-button lg:hidden">
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </header>
       {menuOpen && (
         <nav className="mobile-menu" aria-label="Navegação para celular">
-          <a href="#acomodacoes" onClick={() => setMenuOpen(false)}>Acomodações</a>
-          <a href="#experiencia" onClick={() => setMenuOpen(false)}>Experiência</a>
-          <a href="#urubici" onClick={() => setMenuOpen(false)}>Urubici</a>
-          <a href={BOOKING_URL} target="_blank" rel="noreferrer">Reservas</a>
+          {navItems.map(([href, label]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}
+          <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="button-primary">Reservar</a>
         </nav>
       )}
 
       <section id="top" className="hero-section">
-        <img src={hero} alt="Chalé A-Frame Benta Rosa entre araucárias em Urubici" className="absolute inset-0 size-full object-cover" />
+        <img src={hero} alt="Chalé A-Frame Benta Rosa entre araucárias no Morro da Igreja, Urubici" className="absolute inset-0 size-full object-cover" fetchPriority="high" />
         <div className="hero-overlay" />
-        <div className="relative mx-auto flex min-h-[92svh] max-w-[1600px] flex-col justify-end gap-12 px-5 pb-8 pt-28 md:px-10 lg:flex-row lg:items-center lg:justify-between lg:pb-14">
+        <div className="relative mx-auto flex min-h-[92svh] max-w-[1440px] flex-col justify-end gap-10 px-5 pb-10 pt-28 md:px-10 lg:flex-row lg:items-center lg:justify-between">
           <div className="hero-copy">
-            <p className="eyebrow mb-6 text-sand">Edição · Serra Catarinense</p>
             <h1>Hospedagem de luxo entre araucárias</h1>
-            <p className="mt-6 max-w-[43ch] text-sm font-light leading-relaxed text-paper/85 md:text-base">Chalés autorais no alto do Morro da Igreja. Arquitetura, silêncio e uma vista que muda com a névoa.</p>
-            <a href="#experiencia" aria-label="Conhecer a experiência" className="mt-8 inline-flex items-center gap-3 text-xs uppercase tracking-[0.18em] text-paper/80">
-              Descubra <ArrowDown size={15} />
+            <p className="mt-6 max-w-[46ch] text-base leading-relaxed text-paper md:text-lg">Chalés autorais no alto do Morro da Igreja, na Serra Catarinense — o único lugar do Brasil onde neva todos os anos.</p>
+            <a href="#experiencia" className="mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.12em] text-paper">
+              Descubra <ArrowDown size={15} aria-hidden />
             </a>
           </div>
           <BookingPanel />
         </div>
       </section>
 
-      <section id="experiencia" className="section-shell border-t border-fog/10 py-24 md:py-36">
-        <div className="max-w-[850px]">
-          <p className="eyebrow mb-5 text-sand">A experiência · 1.450 m</p>
-          <h2 className="section-title">O privilégio de acordar acima das nuvens.</h2>
-          <p className="mt-7 max-w-[62ch] text-base font-light leading-8 text-paper/70">Entre araucárias, jardins de inverno e uma lagoa em formato de coração, cada chalé foi pensado como um ponto de vista particular sobre a Serra Catarinense. O atendimento atento de um caseiro completa uma estadia feita para desacelerar.</p>
+      <section id="experiencia" className="section-shell section-pad">
+        <div className="grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-6">
+            <p className="eyebrow mb-5 text-sand">A experiência · 1.450 m</p>
+            <h2 className="section-title">O privilégio de acordar acima das nuvens.</h2>
+          </div>
+          <div className="space-y-4 lg:col-span-5 lg:col-start-8 lg:pt-12">
+            <p className="body-copy">A 1.450 m de altitude, o inverno traz temperaturas negativas e, em alguns dias, neve.</p>
+            <p className="body-copy">Entre araucárias e uma lagoa em formato de coração, os chalés ficam à beira do penhasco, de frente para a serra.</p>
+            <p className="body-copy">Um caseiro acompanha cada estadia, para que vocês só precisem desacelerar.</p>
+          </div>
         </div>
       </section>
 
-      <section id="acomodacoes" className="section-shell pb-28 md:pb-40">
+      <section id="acomodacoes" className="section-shell pb-20 md:pb-28">
+        <div className="mb-10 flex items-end justify-between gap-6">
+          <div><p className="eyebrow mb-4 text-sand">Acomodações</p><h2 className="section-title">Quatro formas de ver a serra.</h2></div>
+        </div>
         <div className="stays-grid">
-          {stays.map((stay, index) => (
-            <article className={`stay-card stay-card-${index + 1}`} key={stay.name}>
-              <div className="overflow-hidden"><img src={stay.image} alt={`${stay.name} da Benta Rosa`} className="stay-image" loading="lazy" /></div>
-              <div className="mt-5 flex items-baseline justify-between gap-4">
+          {stays.map((stay) => (
+            <article key={stay.name} className={`stay-card ${stay.feature ? "stay-feature" : ""}`}>
+              <div className="stay-media"><img src={stay.image} alt={stay.alt} className="stay-image" loading="lazy" /></div>
+              <div className="flex flex-1 flex-col p-5">
                 <h3 className="font-serif text-2xl">{stay.name}</h3>
-                <span className="eyebrow text-sand">0{index + 1}</span>
+                <p className="mt-2 text-base text-paper/90">{stay.line}</p>
+                <ul className="mt-4 flex flex-wrap gap-2" aria-label="Diferenciais">
+                  {stay.tags.map((tag) => <li key={tag} className="tag">{tag}</li>)}
+                </ul>
+                <div className="mt-auto flex items-end justify-between gap-4 pt-6">
+                  <p className="text-sm text-paper/85">a partir de <strong className="font-serif text-lg font-normal text-paper">R$ [PREENCHER]</strong> / noite</p>
+                  <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="link-rosa" aria-label={`Ver detalhes do ${stay.name}`}>Ver detalhes <ArrowUpRight size={14} aria-hidden /></a>
+                </div>
               </div>
-              <p className="mt-2 text-sm font-light leading-6 text-paper/65">{stay.caption}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="border-y border-fog/10 py-24 md:py-32">
-        <div className="section-shell grid items-center gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <div className="font-serif text-7xl leading-none text-terra md:text-8xl">200<span className="text-4xl">mil+</span></div>
-            <p className="eyebrow mt-4 text-sand">seguidores no Instagram</p>
-            <p className="mt-5 max-w-md text-sm font-light leading-7 text-paper/65">Uma comunidade que acompanha os dias de névoa, os amanheceres e a arquitetura singular da Benta Rosa.</p>
-            <a href="https://www.instagram.com/bentarosaurubici" target="_blank" rel="noreferrer" className="button-outline mt-7 inline-flex items-center gap-2"><Instagram size={15} /> @bentarosaurubici</a>
-          </div>
-          <div className="grid grid-cols-3 gap-3 lg:col-span-7">
-            {[gallery03, gallery07, gallery06].map((image, index) => <img key={image} src={image} alt={["Interior do A-Frame ao pôr do sol", "Hidromassagem com vista para a serra", "Cama sob o céu da Serra Catarinense"][index]} className="aspect-[3/4] size-full object-cover" loading="lazy" />)}
+      <section id="avaliacoes" className="section-light section-pad">
+        <div className="section-shell">
+          <div className="grid gap-10 lg:grid-cols-12">
+            <div className="lg:col-span-4">
+              <p className="eyebrow mb-4 text-terra">Avaliações</p>
+              <h2 className="section-title">Quem já esteve aqui.</h2>
+              <dl className="mt-8 space-y-5">
+                {["Google", "Booking"].map((src) => (
+                  <div key={src} className="border-t border-araucaria/20 pt-4">
+                    <dt className="eyebrow text-araucaria/80">{src}</dt>
+                    <dd className="mt-1 flex items-center gap-2 font-serif text-2xl"><Star size={18} className="fill-terra text-terra" aria-hidden />[PREENCHER] · <span className="font-sans text-base">[PREENCHER] avaliações</span></dd>
+                  </div>
+                ))}
+              </dl>
+              <a href="#" className="button-dark mt-8">Ver todas as avaliações [PREENCHER URL]</a>
+            </div>
+            <div className="grid gap-4 md:grid-cols-3 lg:col-span-8">
+              {reviews.map((r, i) => (
+                <figure key={i} className="review-card">
+                  <blockquote className="font-serif text-lg leading-8">“{r.text}”</blockquote>
+                  <figcaption className="mt-6 text-sm"><strong className="font-medium">{r.name}</strong><br />{r.from}</figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="urubici" className="section-shell py-24 md:py-36">
+      <section className="snow-band" aria-label="O frio da serra">
+        <img src={iglu} alt="Vista aérea do Chalé Iglu na mata de araucárias da Serra Catarinense" className="absolute inset-0 size-full object-cover" loading="lazy" />
+        <div className="snow-overlay" />
+        <p className="relative section-shell font-serif text-[clamp(2rem,5vw,4.5rem)] leading-tight">Aqui, o inverno<br />tem neve de verdade.</p>
+      </section>
+
+      <section id="urubici" className="section-shell section-pad">
         <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div><p className="eyebrow mb-4 text-sand">Descoberta · Urubici</p><h2 className="section-title max-w-[15ch]">A serra começa aqui.</h2></div>
-          <p className="max-w-md text-sm font-light leading-7 text-paper/65">No topo do Morro da Igreja, o frio desenha a paisagem entre campos, cachoeiras e florestas de araucárias.</p>
+          <p className="body-copy max-w-md">No topo do Morro da Igreja, o frio desenha a paisagem entre campos, cachoeiras e florestas de araucárias.</p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          <figure className="md:col-span-2"><img src={gallery08} alt="Chalé Benta Rosa cercado pela floresta" className="aspect-[16/9] size-full object-cover" loading="lazy" /><figcaption className="mt-4 font-serif text-base italic text-paper/80">Um refúgio cercado pela natureza exuberante da Serra Catarinense.</figcaption></figure>
-          <figure><img src={gallery02} alt="Vista de dentro do chalé para as araucárias" className="aspect-square size-full object-cover" loading="lazy" /><figcaption className="mt-4 font-serif text-base italic text-paper/80">A paisagem presente até nos momentos mais íntimos.</figcaption></figure>
+          <figure className="md:col-span-2"><img src={gallery08} alt="Chalé Benta Rosa cercado pela floresta de araucárias" className="aspect-[16/9] size-full object-cover" loading="lazy" /></figure>
+          <figure><img src={gallery02} alt="Vista de dentro do chalé para as araucárias" className="aspect-[16/9] size-full object-cover md:aspect-auto md:h-full" loading="lazy" /></figure>
+        </div>
+        <ol className="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+          {attractions.map((a, i) => (
+            <li key={a.name} className="border-t border-fog/20 pt-5">
+              <span className="eyebrow text-rosa">0{i + 1}</span>
+              <h3 className="mt-2 font-serif text-xl">{a.name}</h3>
+              <p className="mt-2 text-base text-paper/85">{a.line}</p>
+              <p className="mt-2 text-sm text-sand">[PREENCHER] km do chalé</p>
+            </li>
+          ))}
+        </ol>
+        <a href="https://www.google.com/search?q=o+que+fazer+em+Urubici" target="_blank" rel="noreferrer" className="button-outline mt-12">Conhecer Urubici</a>
+      </section>
+
+      <section className="section-light section-pad" aria-label="Galeria">
+        <div className="section-shell grid items-end gap-8 lg:grid-cols-12">
+          <div className="grid grid-cols-3 gap-3 lg:col-span-8">
+            {[
+              [gallery03, "Interior do A-Frame ao pôr do sol"],
+              [gallery07, "Hidromassagem com vista para a serra"],
+              [gallery06, "Cama com vista para o céu da Serra Catarinense"],
+            ].map(([src, alt]) => <img key={src} src={src} alt={alt} className="aspect-[4/5] size-full object-cover" loading="lazy" />)}
+          </div>
+          <div className="lg:col-span-4">
+            <p className="body-copy text-araucaria">Os dias de névoa e os amanheceres da Benta Rosa, no Instagram.</p>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="button-dark mt-5 gap-2"><Instagram size={16} aria-hidden /> @bentarosaurubici</a>
+          </div>
         </div>
       </section>
 
-      <section className="border-t border-fog/10 py-24">
-        <div className="section-shell flex flex-col items-start justify-between gap-10 md:flex-row md:items-end">
-          <div className="max-w-xl"><p className="eyebrow mb-5 text-sand">Sua próxima pausa</p><h2 className="section-title">A serra espera por vocês.</h2><p className="mt-5 text-sm font-light leading-7 text-paper/65">Fale com a equipe a qualquer hora ou consulte agora as datas disponíveis.</p></div>
-          <div className="flex flex-wrap gap-3"><a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="button-primary">WhatsApp</a><a href={BOOKING_URL} target="_blank" rel="noreferrer" className="button-outline">Reservar</a></div>
+      <section id="contato" className="section-pad">
+        <div className="section-shell text-center">
+          <p className="eyebrow mb-5 text-sand">Sua próxima pausa</p>
+          <h2 className="section-title">A serra espera por vocês.</h2>
+          <p className="body-copy mx-auto mt-5 max-w-lg">Fale com a equipe pelo WhatsApp ou consulte agora as datas disponíveis.</p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="button-primary button-lg gap-2"><MessageCircle size={18} aria-hidden /> WhatsApp</a>
+            <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="button-outline button-lg">Reservar</a>
+          </div>
         </div>
       </section>
 
-      <footer className="section-shell flex flex-col gap-5 border-t border-fog/10 py-8 text-[10px] uppercase tracking-[0.18em] text-paper/45 md:flex-row md:items-center md:justify-between">
-        <span>Benta Rosa Chalés de Luxo</span><span>Estrada Geral de Santa Terezinha · Urubici, SC</span><span>© 2026</span>
+      <footer className="border-t border-fog/15 pb-24 pt-14">
+        <div className="section-shell grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <img src={logo} alt="Benta Rosa Chalés de Luxo" className="size-16 object-contain brightness-0 invert" loading="lazy" />
+            <p className="mt-4 font-serif text-lg">Benta Rosa Chalés de Luxo</p>
+          </div>
+          <address className="not-italic text-base leading-7 text-paper/90"><MapPin size={16} className="mb-2 text-rosa" aria-hidden />{ADDRESS}</address>
+          <ul className="space-y-3 text-base text-paper/90">
+            <li><a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="footer-link"><Phone size={16} aria-hidden /> {PHONE_DISPLAY}</a></li>
+            <li><a href={`mailto:${EMAIL}`} className="footer-link"><Mail size={16} aria-hidden /> {EMAIL}</a></li>
+            <li><a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="footer-link"><Instagram size={16} aria-hidden /> Instagram</a></li>
+            <li><a href={FACEBOOK_URL} target="_blank" rel="noreferrer" className="footer-link"><Facebook size={16} aria-hidden /> Facebook</a></li>
+          </ul>
+          <iframe title="Mapa da Benta Rosa em Urubici" src={`https://maps.google.com/maps?q=${encodeURIComponent(MAPS_QUERY)}&output=embed`} className="aspect-[4/3] w-full border-0" loading="lazy" />
+        </div>
+        <p className="section-shell mt-10 text-sm text-paper/70">© 2026 Benta Rosa · Urubici, SC</p>
       </footer>
 
-      {chatOpen && (
-        <aside className="chat-card" aria-label="Atendimento 24 horas">
-          <button type="button" onClick={() => setChatOpen(false)} aria-label="Fechar chat" className="absolute right-3 top-3 text-paper/50 hover:text-paper"><X size={16} /></button>
-          <p className="eyebrow text-sand">Atendimento 24h</p>
-          <h2 className="mt-3 font-serif text-xl">Como podemos ajudar?</h2>
-          <p className="mt-2 text-sm font-light leading-6 text-paper/65">Nossa equipe está disponível pelo WhatsApp para dúvidas e reservas.</p>
-          <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="button-primary mt-5 block text-center">Iniciar conversa</a>
-        </aside>
-      )}
-      <button type="button" onClick={() => setChatOpen(!chatOpen)} className="chat-button" aria-label="Abrir atendimento 24 horas"><MessageCircle size={22} /><span className="hidden sm:inline">Chat 24h</span></button>
+      <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="whatsapp-float" aria-label="Falar pelo WhatsApp"><MessageCircle size={22} aria-hidden /></a>
     </main>
   );
 }
