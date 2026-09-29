@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep the Benta Rosa Home as a single editorial presentation with official externally-linked booking and contact flows; this supports a sales prototype without inventing backend behavior.
+- All site photos are defined in src/data/images.ts (null = neutral placeholder); sections never import images directly, so photos swap in one place.
