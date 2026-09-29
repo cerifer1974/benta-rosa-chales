@@ -270,7 +270,7 @@ function Home() {
             <>
               <DialogTitle className="font-serif text-3xl font-normal">{openStay.name}</DialogTitle>
               <div className="stay-dialog-gallery">
-                {galeriaChales[openStay.key].map((image) => <ImageSlot key={image.label} image={image} className="aspect-[4/3] size-full object-cover" />)}
+                {(galeriaChales[openStay.key] ?? []).map((image) => <ImageSlot key={image.label} image={image} className="aspect-[4/3] size-full object-cover" />)}
               </div>
               <DialogDescription className="text-base leading-7 text-araucaria">{openStay.line} {openStay.description}</DialogDescription>
               <ul className="flex flex-wrap gap-2" aria-label="Diferenciais">
