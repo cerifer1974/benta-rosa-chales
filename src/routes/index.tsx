@@ -10,6 +10,7 @@ import { chaleAFrame, chaleBelaVista, chaleIglu, chaleImperial, faixaInverno, ga
 
 const TITLE = "Chalés de Luxo em Urubici, SC | Benta Rosa – Morro da Igreja";
 const DESCRIPTION = "Chalés de luxo no Morro da Igreja, a 1.450 m de altitude em Urubici. Neve, araucárias e vista para a serra. Reserve direto.";
+const GOOGLE_REVIEWS_URL = "https://www.google.com/travel/hotels/s/zha9cqo5e7rHYrSQ9";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -55,9 +56,21 @@ const stays: Stay[] = [
 ];
 
 const reviews = [
-  { text: "[PREENCHER — depoimento real]", name: "[PREENCHER nome]", from: "[PREENCHER cidade]" },
-  { text: "[PREENCHER — depoimento real]", name: "[PREENCHER nome]", from: "[PREENCHER cidade]" },
-  { text: "[PREENCHER — depoimento real]", name: "[PREENCHER nome]", from: "[PREENCHER cidade]" },
+  {
+    text: "Nossa experiência foi simplesmente perfeita! Desde a chegada fomos recebidos com muito carinho e encontramos uma deliciosa cestinha de café nos esperando. O chalé é impecável: extremamente limpo, aconchegante, bem equipado e com uma vista maravilhosa.",
+    name: "Elita Fabiana",
+    context: "Férias · Casal",
+  },
+  {
+    text: "Nossa experiência no chalé foi simplesmente inesquecível! Desde a recepção até os pequenos detalhes da estadia, tudo é pensado com muito carinho. Lugar maravilhoso para descansar, se conectar com a natureza e viver momentos especiais.",
+    name: "Muriel da Cunha Silveira",
+    context: "Férias · Casal",
+  },
+  {
+    text: "A experiência na Benta Rosa é de tirar o fôlego — assim como a vista que tivemos do nosso chalé. Ficamos no Imperial e dá vontade de morar, de tão perfeito. Tudo delicioso e caseiro. A energia desse lugar é surreal.",
+    name: "Ana Carolina Linhares",
+    context: "Férias · Casal",
+  },
 ];
 
 const attractions = [
@@ -174,21 +187,29 @@ function Home() {
             <div className="lg:col-span-4">
               <p className="eyebrow mb-4 text-terra">Avaliações</p>
               <h2 className="section-title">Quem já esteve aqui.</h2>
-              <dl className="mt-8 space-y-5">
-                {["Google", "Booking"].map((src) => (
-                  <div key={src} className="border-t border-rosa-antigo/60 pt-4">
-                    <dt className="eyebrow text-araucaria/80">{src}</dt>
-                    <dd className="mt-1 flex items-center gap-2 font-serif text-2xl"><Star size={18} className="fill-rosa-antigo text-rosa-antigo" aria-hidden />[PREENCHER] · <span className="font-sans text-base">[PREENCHER] avaliações</span></dd>
-                  </div>
-                ))}
-              </dl>
-              <a href="#" className="button-dark mt-8">Ver todas as avaliações [PREENCHER URL]</a>
+              <div className="review-score mt-8">
+                <div className="flex items-end gap-3">
+                  <strong className="font-serif text-5xl font-normal leading-none">4,9</strong>
+                  <span className="mb-1 text-base text-araucaria/70">de 5</span>
+                </div>
+                <div className="mt-3 flex gap-1" aria-label="4,9 de 5 estrelas">
+                  {[0, 1, 2, 3, 4].map((star) => <Star key={star} size={18} className="fill-rosa-antigo text-rosa-antigo" aria-hidden />)}
+                </div>
+                <p className="mt-3 text-sm text-araucaria/75">257 avaliações no Google</p>
+              </div>
+              <a href={GOOGLE_REVIEWS_URL} target="_blank" rel="noreferrer" className="button-dark mt-8 gap-2">Ver avaliações no Google <ArrowRight size={16} aria-hidden /></a>
             </div>
             <div className="grid items-start gap-4 md:grid-cols-3 lg:col-span-8">
               {reviews.map((r, i) => (
                 <figure key={i} className="review-card h-auto self-start">
+                  <div className="mb-5 flex gap-1" aria-label="5 de 5 estrelas">
+                    {[0, 1, 2, 3, 4].map((star) => <Star key={star} size={14} className="fill-rosa-antigo text-rosa-antigo" aria-hidden />)}
+                  </div>
                   <blockquote className="font-serif text-lg leading-8">“{r.text}”</blockquote>
-                  <figcaption className="mt-6 text-sm"><strong className="font-medium">{r.name}</strong><br />{r.from}</figcaption>
+                  <figcaption className="mt-6 border-t border-rosa-antigo/35 pt-4 text-sm">
+                    <strong className="font-medium">{r.name}</strong>
+                    <span className="mt-1 block text-araucaria/65">{r.context} · Google</span>
+                  </figcaption>
                 </figure>
               ))}
             </div>
