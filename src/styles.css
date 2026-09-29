@@ -19,6 +19,8 @@
  */
 
 @theme inline {
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-serif: "Libre Baskerville", serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -59,12 +61,22 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-araucaria: var(--araucaria);
+  --color-paper: var(--paper);
+  --color-terra: var(--terra);
+  --color-sand: var(--sand);
+  --color-fog: var(--fog);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 0.25rem;
+  --araucaria: oklch(0.31 0.028 155);
+  --paper: oklch(0.95 0.015 87);
+  --terra: oklch(0.49 0.16 31);
+  --sand: oklch(0.77 0.04 77);
+  --fog: oklch(1 0 0);
+  --background: var(--araucaria);
+  --foreground: var(--paper);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
@@ -140,5 +152,42 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+    margin: 0;
   }
+
+  html { scroll-behavior: smooth; }
+  button, a, input, select { letter-spacing: inherit; }
+  a { cursor: pointer; }
+  ::selection { background: var(--terra); color: var(--paper); }
 }
+
+@utility section-shell { width: min(100% - 2.5rem, 1440px); margin-inline: auto; }
+@utility eyebrow { font-size: 0.625rem; line-height: 1.2; text-transform: uppercase; letter-spacing: 0.22em; }
+@utility section-title { font-family: var(--font-serif); font-size: clamp(2.25rem, 5vw, 4.75rem); line-height: 1.04; }
+@utility nav-link { font-size: 0.6875rem; font-weight: 300; text-transform: uppercase; letter-spacing: 0.17em; color: color-mix(in oklab, var(--paper) 78%, transparent); transition: color 180ms ease; &:hover { color: var(--paper); } }
+@utility button-primary { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; border-radius: 2px; background: var(--terra); padding: 0.75rem 1.4rem; font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--paper); transition: filter 180ms ease; &:hover { filter: brightness(1.12); } }
+@utility button-outline { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; border: 1px solid color-mix(in oklab, var(--fog) 30%, transparent); border-radius: 2px; padding: 0.7rem 1.35rem; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--paper); transition: background 180ms ease; &:hover { background: color-mix(in oklab, var(--fog) 10%, transparent); } }
+
+.site-header { position: fixed; inset: 0 0 auto; z-index: 40; display: flex; min-height: 70px; align-items: center; justify-content: space-between; border-bottom: 1px solid color-mix(in oklab, var(--fog) 12%, transparent); background: color-mix(in oklab, var(--araucaria) 62%, transparent); padding: .75rem clamp(1.25rem,3vw,3rem); backdrop-filter: blur(20px) saturate(130%); }
+.hero-section { position: relative; min-height: 92svh; overflow: hidden; }
+.hero-overlay { position:absolute; inset:0; background: linear-gradient(90deg, color-mix(in oklab, var(--araucaria) 83%, transparent) 0%, color-mix(in oklab, var(--araucaria) 26%, transparent) 54%, color-mix(in oklab, var(--araucaria) 62%, transparent) 100%); }
+.hero-copy { max-width: 48rem; animation: rise .8s both; }
+.hero-copy h1 { max-width: 10.5ch; font-family: var(--font-serif); font-size: clamp(3rem,7vw,6.8rem); line-height: .98; }
+.booking-panel { width: min(100%, 390px); flex: none; border: 1px solid color-mix(in oklab, var(--fog) 26%, transparent); border-radius: 2px; background: color-mix(in oklab, var(--fog) 12%, transparent); padding: 1.5rem; box-shadow: 0 24px 80px -24px oklch(0 0 0 / .65); backdrop-filter: blur(24px) saturate(125%); animation: rise .8s .15s both; }
+.booking-field { display:block; border:1px solid color-mix(in oklab,var(--fog) 20%,transparent); border-radius:2px; background:color-mix(in oklab,var(--fog) 9%,transparent); padding:.55rem .75rem; }
+.booking-field span { display:block; margin-bottom:.25rem; font-size:.55rem; text-transform:uppercase; letter-spacing:.16em; color:var(--sand); }
+.booking-field input,.booking-field select { width:100%; border:0; outline:0; background:transparent; color:var(--paper); font-size:.78rem; font-weight:300; color-scheme:dark; }
+.stays-grid { display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:1rem; }
+.stay-card { border:1px solid color-mix(in oklab,var(--fog) 18%,transparent); background:color-mix(in oklab,var(--fog) 6%,transparent); padding:1.25rem; backdrop-filter:blur(16px); }
+.stay-card-1 { grid-column:span 5; }.stay-card-2 { grid-column:7/span 4; margin-top:3rem; }.stay-card-3 { grid-column:9/span 4; }.stay-card-4 { grid-column:4/span 6; margin-top:3rem; }
+.stay-image { aspect-ratio:4/3; width:100%; object-fit:cover; transition:transform 700ms cubic-bezier(.2,.8,.2,1); }.stay-card-4 .stay-image{aspect-ratio:16/9}.stay-card:hover .stay-image{transform:scale(1.025)}
+.icon-button { display:grid; width:2.5rem; height:2.5rem; place-items:center; border:1px solid color-mix(in oklab,var(--fog) 20%,transparent); color:var(--paper); }
+.mobile-menu { position:fixed; inset:70px 0 auto; z-index:35; display:flex; flex-direction:column; gap:1.25rem; border-bottom:1px solid color-mix(in oklab,var(--fog) 10%,transparent); background:var(--araucaria); padding:1.5rem; font-family:var(--font-serif); font-size:1.25rem; }
+.chat-button { position:fixed; right:1.5rem; bottom:1.5rem; z-index:50; display:flex; min-height:3.5rem; align-items:center; gap:.55rem; border-radius:999px; background:var(--terra); padding:0 1.1rem; color:var(--paper); font-size:.68rem; text-transform:uppercase; letter-spacing:.12em; box-shadow:0 10px 35px oklch(0 0 0 / .28); }
+.chat-card { position:fixed; right:1.5rem; bottom:6rem; z-index:49; width:min(calc(100% - 3rem),340px); border:1px solid color-mix(in oklab,var(--fog) 20%,transparent); background:color-mix(in oklab,var(--araucaria) 91%,transparent); padding:1.5rem; box-shadow:0 20px 60px oklch(0 0 0 / .35); backdrop-filter:blur(20px); }
+@keyframes rise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+@media (max-width: 1023px) { .stay-card-1,.stay-card-2,.stay-card-3,.stay-card-4 { grid-column:span 6; margin-top:0; } }
+@media (max-width: 767px) { .section-shell{width:min(100% - 2rem,1440px)} .hero-overlay{background:linear-gradient(0deg,var(--araucaria) 0%,color-mix(in oklab,var(--araucaria) 18%,transparent) 70%)} .stays-grid{display:block}.stay-card{margin-bottom:1rem}.booking-panel{max-width:none}.hero-copy h1{font-size:clamp(2.7rem,13vw,4.5rem)} }
+@media (prefers-reduced-motion: reduce) { html{scroll-behavior:auto}.hero-copy,.booking-panel{animation:none}.stay-image{transition:none} }
