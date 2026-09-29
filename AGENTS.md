@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep the Benta Rosa Home as a single editorial presentation with official externally-linked booking and contact flows; this supports a sales prototype without inventing backend behavior.
