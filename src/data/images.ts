@@ -1,17 +1,5 @@
 // Troque as fotos do site apenas aqui. Use `null` para exibir um espaço neutro com o nome da função.
-import heroImg from "@/assets/bentaro/hero.jpg";
-import aFrame from "@/assets/bentaro/a-frame.png";
-import iglu from "@/assets/bentaro/iglu.png";
-import imperial from "@/assets/bentaro/imperial.jpg";
 import belaVista from "@/assets/bentaro/bela-vista.jpg";
-import g01 from "@/assets/bentaro/gallery-01.jpg";
-import g02 from "@/assets/bentaro/gallery-02.jpg";
-import g03 from "@/assets/bentaro/gallery-03.jpg";
-import g04 from "@/assets/bentaro/gallery-04.jpg";
-import g05 from "@/assets/bentaro/gallery-05.jpg";
-import g06 from "@/assets/bentaro/gallery-06.jpg";
-import g07 from "@/assets/bentaro/gallery-07.jpg";
-import g08 from "@/assets/bentaro/gallery-08.jpg";
 import cafePanoramicoAsset from "@/assets/bentaro/curated/caption_4.jpg.asset.json";
 import amanhecerNeblinaAsset from "@/assets/bentaro/curated/caption_3.jpg.asset.json";
 import horizonteAoAmanhecerAsset from "@/assets/bentaro/curated/caption_2.jpg.asset.json";
