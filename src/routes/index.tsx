@@ -1,19 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDown, ArrowUpRight, Facebook, Instagram, Mail, MapPin, Menu, MessageCircle, Phone, Star, X } from "lucide-react";
+import { ArrowDown, ArrowRight, Facebook, Instagram, Mail, MapPin, Menu, MessageCircle, Phone, Star, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BookingPanel } from "@/components/BookingPanel";
 import { ADDRESS, BOOKING_URL, EMAIL, FACEBOOK_URL, INSTAGRAM_URL, MAPS_QUERY, PHONE_DISPLAY, WHATSAPP_URL } from "@/lib/site";
 import logo from "@/assets/bentaro/logo.png";
-import hero from "@/assets/bentaro/hero.jpg";
-import aFrame from "@/assets/bentaro/a-frame.png";
-import iglu from "@/assets/bentaro/iglu.png";
-import belaVista from "@/assets/bentaro/bela-vista.jpg";
-import imperial from "@/assets/bentaro/imperial.jpg";
-import gallery02 from "@/assets/bentaro/gallery-02.jpg";
-import gallery03 from "@/assets/bentaro/gallery-03.jpg";
-import gallery06 from "@/assets/bentaro/gallery-06.jpg";
-import gallery07 from "@/assets/bentaro/gallery-07.jpg";
-import gallery08 from "@/assets/bentaro/gallery-08.jpg";
+import { ImageSlot } from "@/components/ImageSlot";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { chaleAFrame, chaleBelaVista, chaleIglu, chaleImperial, faixaInverno, galeria, galeriaChales, hero, urubiciPrincipal, urubiciSecundaria, type SiteImage } from "@/data/images";
 
 const TITLE = "Chalés de Luxo em Urubici, SC | Benta Rosa – Morro da Igreja";
 const DESCRIPTION = "Chalés de luxo no Morro da Igreja, a 1.450 m de altitude em Urubici. Neve, araucárias e vista para a serra. Reserve direto.";
@@ -51,11 +44,14 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const stays = [
-  { name: "Chalé A-Frame", image: aFrame, line: "Arquitetura em A suspensa sobre o vale.", tags: ["Hidromassagem", "Lareira", "Passarela de vidro"], alt: "Chalé A-Frame com passarela de vidro à beira do penhasco, Urubici", feature: true },
-  { name: "Chalé Iglu", image: iglu, line: "Dormir sob um domo aberto para o céu.", tags: ["Domo de vidro", "Vista panorâmica", "Integração com a mata"], alt: "Chalé Iglu com domo de vidro entre araucárias, Urubici", feature: true },
-  { name: "Chalé Imperial", image: imperial, line: "Luxo clássico, reservado para dois.", tags: ["Luxo clássico", "Privacidade", "Ideal para casais"], alt: "Interior do Chalé Imperial com vista para a serra", feature: false },
-  { name: "Casa Bela Vista", image: belaVista, line: "Nossa opção mais acessível, com o mesmo cenário.", tags: ["Aconchego", "Vista para as montanhas", "Pet friendly"], alt: "Casa Bela Vista com vista para as montanhas de Urubici", feature: false },
+type Stay = { key: string; name: string; image: SiteImage; line: string; description: string; tags: string[]; price: string | null; feature: boolean };
+
+// price: null => exibe "Consulte valores"
+const stays: Stay[] = [
+  { key: "chaleAFrame", name: "Chalé A-Frame", image: chaleAFrame, line: "Arquitetura em A suspensa sobre o vale.", description: "[PREENCHER — descrição completa do Chalé A-Frame]", tags: ["Hidromassagem", "Lareira", "Passarela de vidro"], price: null, feature: true },
+  { key: "chaleIglu", name: "Chalé Iglu", image: chaleIglu, line: "Dormir sob um domo aberto para o céu.", description: "[PREENCHER — descrição completa do Chalé Iglu]", tags: ["Domo de vidro", "Vista panorâmica", "Integração com a mata"], price: null, feature: true },
+  { key: "chaleImperial", name: "Chalé Imperial", image: chaleImperial, line: "Luxo clássico, reservado para dois.", description: "[PREENCHER — descrição completa do Chalé Imperial]", tags: ["Luxo clássico", "Privacidade", "Ideal para casais"], price: null, feature: false },
+  { key: "chaleBelaVista", name: "Casa Bela Vista", image: chaleBelaVista, line: "Nossa opção mais acessível, com o mesmo cenário.", description: "[PREENCHER — descrição completa da Casa Bela Vista]", tags: ["Aconchego", "Vista para as montanhas"], price: null, feature: false },
 ];
 
 const reviews = [
@@ -84,6 +80,7 @@ const navItems = [
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openStay, setOpenStay] = useState<Stay | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -115,12 +112,12 @@ function Home() {
       )}
 
       <section id="top" className="hero-section">
-        <img src={hero} alt="Chalé A-Frame Benta Rosa entre araucárias no Morro da Igreja, Urubici" className="absolute inset-0 size-full object-cover" fetchPriority="high" />
+        <ImageSlot image={hero} eager className="absolute inset-0 size-full object-cover" />
         <div className="hero-overlay" />
-        <div className="relative mx-auto flex min-h-[92svh] max-w-[1440px] flex-col justify-end gap-10 px-5 pb-10 pt-28 md:px-10 lg:flex-row lg:items-center lg:justify-between">
+        <div className="relative mx-auto flex hero-inner max-w-[1440px] flex-col justify-end gap-12 px-5 pb-12 pt-28 md:px-10 lg:flex-row lg:items-center lg:justify-between">
           <div className="hero-copy">
             <h1>Hospedagem de luxo entre araucárias</h1>
-            <p className="mt-6 max-w-[46ch] text-base leading-relaxed text-paper md:text-lg">Chalés autorais no alto do Morro da Igreja, na Serra Catarinense — o único lugar do Brasil onde neva todos os anos.</p>
+            <p className="mt-6 max-w-[46ch] text-base leading-relaxed text-paper md:text-lg">Chalés autorais no alto do Morro da Igreja. Arquitetura, silêncio e a Serra Catarinense, onde o inverno pode ter neve.</p>
             <a href="#experiencia" className="mt-8 inline-flex items-center gap-3 text-sm uppercase tracking-[0.12em] text-paper">
               Descubra <ArrowDown size={15} aria-hidden />
             </a>
@@ -150,7 +147,7 @@ function Home() {
         <div className="stays-grid">
           {stays.map((stay) => (
             <article key={stay.name} className={`stay-card ${stay.feature ? "stay-feature" : ""}`}>
-              <div className="stay-media"><img src={stay.image} alt={stay.alt} className="stay-image" loading="lazy" /></div>
+              <div className="stay-media"><ImageSlot image={stay.image} className="stay-image" /></div>
               <div className="flex flex-1 flex-col p-5">
                 <h3 className="font-serif text-2xl">{stay.name}</h3>
                 <p className="mt-2 text-base text-paper/90">{stay.line}</p>
@@ -158,8 +155,12 @@ function Home() {
                   {stay.tags.map((tag) => <li key={tag} className="tag">{tag}</li>)}
                 </ul>
                 <div className="mt-auto flex items-end justify-between gap-4 pt-6">
-                  <p className="text-sm text-paper/85">a partir de <strong className="font-serif text-lg font-normal text-paper">R$ [PREENCHER]</strong> / noite</p>
-                  <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="link-rosa" aria-label={`Ver detalhes do ${stay.name}`}>Ver detalhes <ArrowUpRight size={14} aria-hidden /></a>
+                  {stay.price ? (
+                    <p className="text-sm text-paper/85">a partir de <strong className="font-serif text-lg font-normal text-paper">R$ {stay.price}</strong> / noite</p>
+                  ) : (
+                    <p className="text-sm text-paper/80">Consulte valores</p>
+                  )}
+                  <button type="button" onClick={() => setOpenStay(stay)} className="link-rosa" aria-label={`Ver detalhes do ${stay.name}`}>Ver detalhes <ArrowRight size={16} aria-hidden /></button>
                 </div>
               </div>
             </article>
@@ -175,17 +176,17 @@ function Home() {
               <h2 className="section-title">Quem já esteve aqui.</h2>
               <dl className="mt-8 space-y-5">
                 {["Google", "Booking"].map((src) => (
-                  <div key={src} className="border-t border-araucaria/20 pt-4">
+                  <div key={src} className="border-t border-rosa-antigo/60 pt-4">
                     <dt className="eyebrow text-araucaria/80">{src}</dt>
-                    <dd className="mt-1 flex items-center gap-2 font-serif text-2xl"><Star size={18} className="fill-terra text-terra" aria-hidden />[PREENCHER] · <span className="font-sans text-base">[PREENCHER] avaliações</span></dd>
+                    <dd className="mt-1 flex items-center gap-2 font-serif text-2xl"><Star size={18} className="fill-rosa-antigo text-rosa-antigo" aria-hidden />[PREENCHER] · <span className="font-sans text-base">[PREENCHER] avaliações</span></dd>
                   </div>
                 ))}
               </dl>
               <a href="#" className="button-dark mt-8">Ver todas as avaliações [PREENCHER URL]</a>
             </div>
-            <div className="grid gap-4 md:grid-cols-3 lg:col-span-8">
+            <div className="grid items-start gap-4 md:grid-cols-3 lg:col-span-8">
               {reviews.map((r, i) => (
-                <figure key={i} className="review-card">
+                <figure key={i} className="review-card h-auto self-start">
                   <blockquote className="font-serif text-lg leading-8">“{r.text}”</blockquote>
                   <figcaption className="mt-6 text-sm"><strong className="font-medium">{r.name}</strong><br />{r.from}</figcaption>
                 </figure>
@@ -196,9 +197,9 @@ function Home() {
       </section>
 
       <section className="snow-band" aria-label="O frio da serra">
-        <img src={iglu} alt="Vista aérea do Chalé Iglu na mata de araucárias da Serra Catarinense" className="absolute inset-0 size-full object-cover" loading="lazy" />
+        <ImageSlot image={faixaInverno} className="absolute inset-0 size-full object-cover" />
         <div className="snow-overlay" />
-        <p className="relative section-shell font-serif text-[clamp(2rem,5vw,4.5rem)] leading-tight">Aqui, o inverno<br />tem neve de verdade.</p>
+        <p className="relative section-shell font-serif max-w-[22ch] text-[clamp(1.9rem,4.4vw,4rem)] leading-tight">Onde o inverno chega com névoa,<br />geada e, às vezes, neve.</p>
       </section>
 
       <section id="urubici" className="section-shell section-pad">
@@ -207,12 +208,12 @@ function Home() {
           <p className="body-copy max-w-md">No topo do Morro da Igreja, o frio desenha a paisagem entre campos, cachoeiras e florestas de araucárias.</p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          <figure className="md:col-span-2"><img src={gallery08} alt="Chalé Benta Rosa cercado pela floresta de araucárias" className="aspect-[16/9] size-full object-cover" loading="lazy" /></figure>
-          <figure><img src={gallery02} alt="Vista de dentro do chalé para as araucárias" className="aspect-[16/9] size-full object-cover md:aspect-auto md:h-full" loading="lazy" /></figure>
+          <figure className="md:col-span-2"><ImageSlot image={urubiciPrincipal} className="aspect-[16/9] size-full object-cover" /></figure>
+          <figure><ImageSlot image={urubiciSecundaria} className="aspect-[16/9] size-full object-cover md:aspect-auto md:h-full" /></figure>
         </div>
         <ol className="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
           {attractions.map((a, i) => (
-            <li key={a.name} className="border-t border-fog/20 pt-5">
+            <li key={a.name} className="border-t border-rosa-antigo/50 pt-5">
               <span className="eyebrow text-rosa">0{i + 1}</span>
               <h3 className="mt-2 font-serif text-xl">{a.name}</h3>
               <p className="mt-2 text-base text-paper/85">{a.line}</p>
@@ -223,19 +224,13 @@ function Home() {
         <a href="https://www.google.com/search?q=o+que+fazer+em+Urubici" target="_blank" rel="noreferrer" className="button-outline mt-12">Conhecer Urubici</a>
       </section>
 
-      <section className="section-light section-pad" aria-label="Galeria">
-        <div className="section-shell grid items-end gap-8 lg:grid-cols-12">
-          <div className="grid grid-cols-3 gap-3 lg:col-span-8">
-            {[
-              [gallery03, "Interior do A-Frame ao pôr do sol"],
-              [gallery07, "Hidromassagem com vista para a serra"],
-              [gallery06, "Cama com vista para o céu da Serra Catarinense"],
-            ].map(([src, alt]) => <img key={src} src={src} alt={alt} className="aspect-[4/5] size-full object-cover" loading="lazy" />)}
+      <section className="section-light section-pad" aria-labelledby="momentos-title">
+        <div className="section-shell">
+          <h2 id="momentos-title" className="section-title mb-8">Momentos na Benta Rosa</h2>
+          <div className="moments-strip">
+            {galeria.map((image) => <ImageSlot key={image.label} image={image} className="moment-image" />)}
           </div>
-          <div className="lg:col-span-4">
-            <p className="body-copy text-araucaria">Os dias de névoa e os amanheceres da Benta Rosa, no Instagram.</p>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="button-dark mt-5 gap-2"><Instagram size={16} aria-hidden /> @bentarosaurubici</a>
-          </div>
+          <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="button-dark mt-6 gap-2"><Instagram size={16} aria-hidden /> @bentarosaurubici</a>
         </div>
       </section>
 
@@ -268,6 +263,24 @@ function Home() {
         </div>
         <p className="section-shell mt-10 text-sm text-paper/70">© 2026 Benta Rosa · Urubici, SC</p>
       </footer>
+
+      <Dialog open={!!openStay} onOpenChange={(o) => !o && setOpenStay(null)}>
+        <DialogContent className="stay-dialog max-h-[90svh] overflow-y-auto">
+          {openStay && (
+            <>
+              <DialogTitle className="font-serif text-3xl font-normal">{openStay.name}</DialogTitle>
+              <div className="stay-dialog-gallery">
+                {galeriaChales[openStay.key].map((image) => <ImageSlot key={image.label} image={image} className="aspect-[4/3] size-full object-cover" />)}
+              </div>
+              <DialogDescription className="text-base leading-7 text-araucaria">{openStay.line} {openStay.description}</DialogDescription>
+              <ul className="flex flex-wrap gap-2" aria-label="Diferenciais">
+                {openStay.tags.map((tag) => <li key={tag} className="tag tag-light">{tag}</li>)}
+              </ul>
+              <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="button-primary w-full sm:w-auto">Reservar este chalé</a>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="whatsapp-float" aria-label="Falar pelo WhatsApp"><MessageCircle size={22} aria-hidden /></a>
     </main>
