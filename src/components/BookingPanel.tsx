@@ -29,7 +29,7 @@ export function BookingPanel() {
       <p className="mb-4 font-serif text-lg">Consulte datas disponíveis</p>
       <Popover>
         <PopoverTrigger asChild>
-          <button type="button" className="booking-field flex w-full items-center justify-between text-left">
+          <button type="button" className="booking-field booking-trigger text-left">
             <span className="grid grid-cols-2 gap-6">
               <span><span className="booking-label">Entrada</span><span className="booking-value">{fmt(range?.from)}</span></span>
               <span><span className="booking-label">Saída</span><span className="booking-value">{fmt(range?.to)}</span></span>
