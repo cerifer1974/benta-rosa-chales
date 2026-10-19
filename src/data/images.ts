@@ -20,14 +20,17 @@ export const chaleIglu = img("chaleIglu", chaleIgluAsset.url, "Chalé Iglu envid
 export const chaleImperial = img("chaleImperial", chaleImperialNoiteAsset.url, "Chalé Imperial iluminado à noite com piscina privativa");
 export const chaleBelaVista = img("chaleBelaVista", belaVista, "Casa Bela Vista com vista para as montanhas de Urubici");
 export const faixaInverno = img("faixaInverno", horizonteAoAmanhecerAsset.url, "Amanhecer frio e nublado visto do chalé na Serra Catarinense");
-export const urubiciPrincipal = img("urubiciPrincipal", interiorPanoramicoAsset.url, "Suíte panorâmica aberta para as montanhas de Urubici");
-export const urubiciSecundaria = img("urubiciSecundaria", amanhecerNeblinaAsset.url, "Neblina entre as araucárias vista da cama do chalé");
+// Paisagens de Urubici (sem interiores). Aguardando fotos.
+export const urubiciPrincipal = img("urubiciPrincipal · paisagem", null, "Paisagem da serra em Urubici");
+export const urubiciSecundaria = img("urubiciSecundaria · paisagem", null, "Paisagem da serra em Urubici");
+export const faixaCelebracoes = img("faixaCelebracoes", null, "Casal celebrando na Benta Rosa");
+// Galeria: fotos exclusivas, não usadas em nenhuma outra seção da página.
 export const galeria: SiteImage[] = [
   img("galeria 1", cafeDaManhaAsset.url, "Café da manhã servido para duas pessoas no chalé"),
   img("galeria 2", cafePanoramicoAsset.url, "Café da manhã diante das janelas panorâmicas do chalé"),
   img("galeria 3", piscinaImperialAsset.url, "Piscina aquecida do Chalé Imperial em manhã de neblina"),
   img("galeria 4", amanhecerNeblinaAsset.url, "Amanhecer com neblina visto da cama do chalé"),
-  img("galeria 5", nascerDoSolAsset.url, "Nascer do sol atravessando a fachada envidraçada do A-Frame"),
+  img("galeria 5", interiorPanoramicoAsset.url, "Suíte panorâmica aberta para as montanhas"),
 ];
 
 // Fotos extras de cada chalé, exibidas no modal "Ver detalhes".

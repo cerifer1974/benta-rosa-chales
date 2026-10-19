@@ -6,7 +6,7 @@ import { ADDRESS, BOOKING_URL, EMAIL, FACEBOOK_URL, INSTAGRAM_URL, MAPS_QUERY, P
 import logo from "@/assets/bentaro/logo.png";
 import { ImageSlot } from "@/components/ImageSlot";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
-import { chaleAFrame, chaleBelaVista, chaleIglu, chaleImperial, faixaInverno, galeria, galeriaChales, hero, urubiciPrincipal, urubiciSecundaria, type SiteImage } from "@/data/images";
+import { chaleAFrame, chaleBelaVista, chaleIglu, chaleImperial, faixaCelebracoes, faixaInverno, galeria, galeriaChales, hero, urubiciPrincipal, urubiciSecundaria, type SiteImage } from "@/data/images";
 
 const TITLE = "Chalés de Luxo em Urubici, SC | Benta Rosa – Morro da Igreja";
 const DESCRIPTION = "Chalés de luxo no Morro da Igreja, a 1.450 m de altitude em Urubici. Neve, araucárias e vista para a serra. Reserve direto.";
@@ -50,10 +50,16 @@ type Stay = { key: string; name: string; image: SiteImage; line: string; descrip
 // price: null => exibe "Consulte valores"
 const stays: Stay[] = [
   { key: "chaleAFrame", name: "Chalé A-Frame", image: chaleAFrame, line: "Arquitetura em A suspensa sobre o vale.", description: "[PREENCHER — descrição completa do Chalé A-Frame]", tags: ["Hidromassagem", "Lareira", "Passarela de vidro"], price: null, feature: true },
-  { key: "chaleIglu", name: "Chalé Iglu", image: chaleIglu, line: "Dormir sob um domo aberto para o céu.", description: "[PREENCHER — descrição completa do Chalé Iglu]", tags: ["Domo de vidro", "Vista panorâmica", "Integração com a mata"], price: null, feature: true },
-  { key: "chaleImperial", name: "Chalé Imperial", image: chaleImperial, line: "Luxo clássico, reservado para dois.", description: "[PREENCHER — descrição completa do Chalé Imperial]", tags: ["Luxo clássico", "Privacidade", "Ideal para casais"], price: null, feature: false },
+  { key: "chaleIglu", name: "Chalé Iglu", image: chaleIglu, line: "Dormir sob um domo de vidro, de frente para o céu.", description: "[PREENCHER — descrição completa do Chalé Iglu]", tags: ["Domo de vidro", "Vista panorâmica", "Integração com a mata"], price: null, feature: true },
+  { key: "chaleImperial", name: "Chalé Imperial", image: chaleImperial, line: "Luxo clássico, reservado para dois.", description: "[PREENCHER — descrição completa do Chalé Imperial]", tags: ["Piscina aquecida", "Privacidade total", "Ideal para casais"], price: null, feature: false },
   { key: "chaleBelaVista", name: "Casa Bela Vista", image: chaleBelaVista, line: "Nossa opção mais acessível, com o mesmo cenário.", description: "[PREENCHER — descrição completa da Casa Bela Vista]", tags: ["Aconchego", "Vista para as montanhas"], price: null, feature: false },
 ];
+
+// Modal só aparece com pelo menos 3 fotos reais.
+const stayPhotos = (key: string) => (galeriaChales[key] ?? []).filter((i) => i.src);
+
+// Benefícios da reserva direta. Lista vazia => faixa oculta.
+const directBenefits = ["[PREENCHER — benefício 1]", "[PREENCHER — benefício 2]", "[PREENCHER — benefício 3]"];
 
 const reviews = [
   {
@@ -167,13 +173,15 @@ function Home() {
                 <ul className="mt-4 flex flex-wrap gap-2" aria-label="Diferenciais">
                   {stay.tags.map((tag) => <li key={tag} className="tag">{tag}</li>)}
                 </ul>
-                <div className="mt-auto flex items-end justify-between gap-4 pt-6">
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-4 pt-6">
                   {stay.price ? (
                     <p className="text-sm text-paper/85">a partir de <strong className="font-serif text-lg font-normal text-paper">R$ {stay.price}</strong> / noite</p>
                   ) : (
-                    <p className="text-sm text-paper/80">Consulte valores</p>
+                    <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="button-outline">Ver disponibilidade</a>
                   )}
-                  <button type="button" onClick={() => setOpenStay(stay)} className="link-rosa" aria-label={`Ver detalhes do ${stay.name}`}>Ver detalhes <ArrowRight size={16} aria-hidden /></button>
+                  {stayPhotos(stay.key).length >= 3 && (
+                    <button type="button" onClick={() => setOpenStay(stay)} className="link-rosa" aria-label={`Ver detalhes do ${stay.name}`}>Ver detalhes <ArrowRight size={16} aria-hidden /></button>
+                  )}
                 </div>
               </div>
             </article>
@@ -238,11 +246,10 @@ function Home() {
               <span className="eyebrow text-rosa">0{i + 1}</span>
               <h3 className="mt-2 font-serif text-xl">{a.name}</h3>
               <p className="mt-2 text-base text-paper/85">{a.line}</p>
-              <p className="mt-2 text-sm text-sand">[PREENCHER] km do chalé</p>
             </li>
           ))}
         </ol>
-        <a href="https://www.google.com/search?q=o+que+fazer+em+Urubici" target="_blank" rel="noreferrer" className="button-outline mt-12">Conhecer Urubici</a>
+        <a href="https://www.bentarosaurubici.com.br/conheca-urubici" target="_blank" rel="noreferrer" className="button-outline mt-12">Conhecer Urubici</a>
       </section>
 
       <section className="section-light section-pad" aria-labelledby="momentos-title">
@@ -254,6 +261,30 @@ function Home() {
           <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="button-dark mt-6 gap-2"><Instagram size={16} aria-hidden /> @bentarosaurubici</a>
         </div>
       </section>
+
+      <section className="section-shell section-pad" aria-labelledby="celebracoes-title">
+        <div className="grid items-center gap-8 md:grid-cols-2 md:gap-14">
+          <ImageSlot image={faixaCelebracoes} className="aspect-[4/3] size-full object-cover" />
+          <div>
+            <p className="eyebrow mb-4 text-sand">Celebrações</p>
+            <h2 id="celebracoes-title" className="section-title">Lua de mel, aniversários e pedidos de casamento.</h2>
+            <p className="body-copy mt-5 max-w-md">Conte para a equipe o que vocês vão celebrar e planejem juntos a estadia.</p>
+            <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="button-primary mt-8 gap-2"><MessageCircle size={18} aria-hidden /> Falar pelo WhatsApp</a>
+          </div>
+        </div>
+      </section>
+
+      {directBenefits.length > 0 && (
+        <section className="section-light py-14 md:py-20" aria-labelledby="direto-title">
+          <div className="section-shell">
+            <h2 id="direto-title" className="section-title mb-8">Reserve direto</h2>
+            <ul className="grid gap-6 sm:grid-cols-3">
+              {directBenefits.map((b) => <li key={b} className="border-t border-rosa-antigo/50 pt-4 font-serif text-lg">{b}</li>)}
+            </ul>
+            <a href={BOOKING_URL} target="_blank" rel="noreferrer" className="button-dark mt-8">Reservar direto</a>
+          </div>
+        </section>
+      )}
 
       <section id="contato" className="section-pad">
         <div className="section-shell text-center">
